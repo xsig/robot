@@ -32,7 +32,7 @@ def command():
     abort(400)
   move = request.json['move']
   speed = request.json['speed']
-  speed=float(speed)
+  speed=int(speed)
 
   BrickPiSetup()
 
