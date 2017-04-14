@@ -14,12 +14,25 @@ def left(speed):
   BrickPi.MotorSpeed[motor1]=speed
   BrickPi.MotorSpeed[motor2]=-speed
 
+def right(speed):
+  BrickPi.MotorSpeed[motor1]=-speed
+  BrickPi.MotorSpeed[motor2]=speed
+
+def up(speed):
+  BrickPi.MotorSpeed[motor1]=speed
+  BrickPi.MotorSpeed[motor2]=speed
+
+def down(speed):
+  BrickPi.MotorSpeed[motor1]=-speed
+  BrickPi.MotorSpeed[motor2]=-speed
+
 @application.route("/robot",methods=['POST'])
 def command():
   if not request.json:
     abort(400)
   move = request.json['move']
   speed = request.json['speed']
+  speed=float(speed)
 
   BrickPiSetup()
 
@@ -29,7 +42,14 @@ def command():
   BrickPi.Timeout=2000
   BrickPiSetTimeout()
 
-  left(200)
+  if move=="L":
+    left(speed)
+  elif move=="R":
+    right(speed)
+  elif move=="U":
+    up(speed)
+  else:
+    down(speed)
 
   BrickPiUpdateValues()
   
